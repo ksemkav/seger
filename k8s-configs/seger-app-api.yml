@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seger-main-api
+  labels:
+    app: seger-main-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seger-main-api
+  template:
+    metadata:
+      labels:
+        app: seger-main-api
+    spec:
+      containers:
+      - name: seger-main-api
+        image: registry.digitalocean.com/seger/seger:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: seger-main-api-service
+spec:
+ type: LoadBalancer
+ ports:
+ - port: 80
+ selector:
+   app: seger-main-api
+
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: seger-main-api-ingress
+  labels:
+    app: seger-main-api-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: seger-main-api-service
+          servicePort: 80

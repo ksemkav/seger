@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Seger.App": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "launchUrl": "api",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://*:5001",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
